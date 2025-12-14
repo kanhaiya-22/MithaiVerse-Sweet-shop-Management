@@ -1,0 +1,13 @@
+Add at least fifteen more authentic Indian sweets to the existing product list, such as Ghewar, Malpua, Imarti, Kalakand, Chum Chum, Sandesh, Balushahi, Mawa Kachori, Moong Dal Halwa, Besan Ladoo, Coconut Barfi, Khoya Peda, Anjeer Roll, Til Gul, and Phirni. All sweets must be properly categorized, display prices strictly in Indian Rupees (₹), and fully support cart operations including adding, removing, and updating item quantities.
+ 
+
+Add video-style animations and motion-based visual elements throughout the website to make it feel dynamic and engaging. This should include a subtle looping video or animated background in the hero section, smooth animated transitions between sections, and motion effects on product cards. Every page must contain some form of dynamic or moving content, such as floating sweets, auto-scrolling banners, or animated UI components, while maintaining smooth performance.
+
+ Ensure that the cart functionality is completely operational across the website. Users should be able to add products to the cart, update quantities, remove items, and view an accurate order summary. The cart must be persistent, meaning it should retain items after page refresh and across sessions when the user is logged in. Cart data must be securely stored and synced with MongoDB.
+
+Implement a fully working login and signup system using secure authentication practices such as JWT. User credentials must be stored safely in MongoDB, and protected routes like cart and order pages should only be accessible to authenticated users. Unauthenticated users attempting to access these pages should be redirected to the login screen.
+
+
+Use MongoDB Atlas as the database for the entire application. Connect the backend using the following MongoDB connection string, managed through environment variables for security:
+mongodb+srv://shopdata:<db_password>@cluster0.wb26hxv.mongodb.net/?appName=Cluster0.
+All application data, including users, products, carts, and orders, must be stored and managed through MongoDB.

@@ -3,23 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/lib/cart";
 
 interface SweetCardProps {
   sweet: Sweet;
 }
 
 export default function SweetCard({ sweet }: SweetCardProps) {
-  const { toast } = useToast();
+  const { addToCart } = useCart();
   const isOutOfStock = sweet.stock === 0;
-
-  const handlePurchase = () => {
-    toast({
-      title: "Added to cart!",
-      description: `1x ${sweet.name} added to your basket.`,
-      duration: 2000,
-    });
-  };
 
   return (
     <Card className="group overflow-hidden border-none shadow-md transition-all hover:-translate-y-1 hover:shadow-xl bg-card">
@@ -56,7 +48,7 @@ export default function SweetCard({ sweet }: SweetCardProps) {
         <Button 
           className="w-full rounded-full font-bold shadow-sm bg-primary text-primary-foreground hover:bg-primary/90" 
           disabled={isOutOfStock}
-          onClick={handlePurchase}
+          onClick={() => addToCart(sweet)}
           variant={isOutOfStock ? "outline" : "default"}
         >
           {isOutOfStock ? "Out of Stock" : (

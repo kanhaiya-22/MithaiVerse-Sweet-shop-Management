@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowRight, Star, Award, Gift } from "lucide-react";
-import heroBg from "@assets/generated_images/pastel_candy_pattern_background.png"; // Keeping pattern for now, maybe replace if needed
+import heroVideo from "@assets/generated_videos/slow_motion_pouring_of_golden_syrup_over_indian_sweets.mp4";
 import { MOCK_SWEETS } from "@/lib/mockData";
 import SweetCard from "@/components/SweetCard";
 import { motion } from "framer-motion";
@@ -15,45 +15,51 @@ export default function Home() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 pb-32 lg:pt-32">
-        <div className="container relative z-10 mx-auto px-4 text-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+      <section className="relative overflow-hidden h-[90vh] flex items-center justify-center text-center">
+        {/* Video Background */}
+        <div className="absolute inset-0 z-0">
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="w-full h-full object-cover"
           >
-            <span className="inline-block rounded-full bg-secondary/20 px-4 py-1.5 text-sm font-bold text-secondary-foreground mb-6 ring-1 ring-secondary/50">
+            <source src={heroVideo} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+        </div>
+
+        <div className="container relative z-10 mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="inline-block rounded-full bg-white/20 backdrop-blur-md px-4 py-1.5 text-sm font-bold text-white mb-6 ring-1 ring-white/30 animate-pulse">
               🪔 Festive Season Special: Kaju Katli Packs!
             </span>
-            <h1 className="font-heading text-5xl md:text-7xl font-extrabold tracking-tight text-foreground mb-6 drop-shadow-sm">
-              Discover the Taste of <span className="text-primary">India</span>
+            <h1 className="font-heading text-6xl md:text-8xl font-extrabold tracking-tight text-white mb-6 drop-shadow-lg">
+              Taste of <span className="text-secondary">Tradition</span>
             </h1>
-            <p className="mx-auto max-w-2xl text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed">
+            <p className="mx-auto max-w-2xl text-xl md:text-2xl text-white/90 mb-10 leading-relaxed drop-shadow-md">
               Authentic, handcrafted Indian sweets delivered to your doorstep. 
               From the syrup-soaked Gulab Jamun to the royal Kaju Katli.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/dashboard">
-                <Button size="lg" className="rounded-full text-lg h-14 px-8 bg-primary text-primary-foreground hover:bg-primary/90 shadow-xl shadow-primary/20 hover:shadow-2xl transition-all hover:-translate-y-1">
+                <Button size="lg" className="rounded-full text-lg h-16 px-10 bg-secondary text-secondary-foreground hover:bg-white hover:text-primary shadow-xl transition-all hover:scale-105 font-bold">
                   Order Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="/auth">
-                <Button size="lg" variant="outline" className="rounded-full text-lg h-14 px-8 border-2 border-primary/20 hover:bg-primary/5 transition-all text-primary font-bold">
+                <Button size="lg" variant="outline" className="rounded-full text-lg h-16 px-10 border-2 border-white/50 text-white hover:bg-white hover:text-primary transition-all font-bold backdrop-blur-sm">
                   View Menu
                 </Button>
               </Link>
             </div>
           </motion.div>
         </div>
-        
-        {/* Decorative Background Elements - Reusing the pattern but maybe we can overlay a gold gradient */}
-        <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-5 pointer-events-none">
-             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background"></div>
-             <img src={heroBg} alt="Background" className="w-full h-full object-cover grayscale" />
-        </div>
-        {/* Gold Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/20 blur-[100px] -z-20 rounded-full"></div>
       </section>
 
       {/* Features Section */}

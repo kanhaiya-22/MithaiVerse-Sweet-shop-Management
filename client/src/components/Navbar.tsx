@@ -4,10 +4,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import logoImage from "@assets/Pink_Minimalist_Cake_Shop_On_Facebook_Post_1765709011132.jpg";
+import { useCart } from "@/lib/cart";
+import { Badge } from "@/components/ui/badge";
 
 export default function Navbar() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const { totalItems } = useCart();
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -56,9 +59,16 @@ export default function Navbar() {
               <User className="h-5 w-5" />
             </Button>
           </Link>
-          <Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all border border-secondary/50">
-            <ShoppingBag className="mr-2 h-4 w-4" /> Cart (0)
-          </Button>
+          <Link href="/cart">
+            <Button className="relative rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all border border-secondary/50">
+              <ShoppingBag className="mr-2 h-4 w-4" /> Cart
+              {totalItems > 0 && (
+                <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-secondary text-secondary-foreground border-2 border-background text-[10px]">
+                  {totalItems}
+                </Badge>
+              )}
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu */}
@@ -81,6 +91,11 @@ export default function Navbar() {
                 <Link href="/auth">
                   <Button className="w-full mb-2" variant="outline" onClick={() => setIsOpen(false)}>
                     Login / Register
+                  </Button>
+                </Link>
+                <Link href="/cart">
+                  <Button className="w-full" onClick={() => setIsOpen(false)}>
+                    View Cart ({totalItems})
                   </Button>
                 </Link>
               </div>
