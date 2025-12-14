@@ -4,7 +4,7 @@ import path from 'path';
 
 /**
  * Vite plugin that updates og:image and twitter:image meta tags
- * to point to the app's opengraph image with the correct Replit domain.
+ * to point to the app's opengraph image with the correct domain.
  */
 export function metaImagesPlugin(): Plugin {
   return {
@@ -12,7 +12,7 @@ export function metaImagesPlugin(): Plugin {
     transformIndexHtml(html) {
       const baseUrl = getDeploymentUrl();
       if (!baseUrl) {
-        log('[meta-images] no Replit deployment domain found, skipping meta tag updates');
+        log('[meta-images] no deployment domain found, skipping meta tag updates');
         return html;
       }
 
@@ -56,15 +56,24 @@ export function metaImagesPlugin(): Plugin {
 }
 
 function getDeploymentUrl(): string | null {
+  // Production: Use Replit domain if available
   if (process.env.REPLIT_INTERNAL_APP_DOMAIN) {
     const url = `https://${process.env.REPLIT_INTERNAL_APP_DOMAIN}`;
-    log('[meta-images] using internal app domain:', url);
+    log('[meta-images] using Replit internal app domain:', url);
     return url;
   }
 
   if (process.env.REPLIT_DEV_DOMAIN) {
     const url = `https://${process.env.REPLIT_DEV_DOMAIN}`;
-    log('[meta-images] using dev domain:', url);
+    log('[meta-images] using Replit dev domain:', url);
+    return url;
+  }
+
+  // Local development: Use localhost
+  if (process.env.NODE_ENV !== 'production') {
+    const port = process.env.PORT || '5000';
+    const url = `http://localhost:${port}`;
+    log('[meta-images] using local development URL:', url);
     return url;
   }
 
@@ -72,7 +81,8 @@ function getDeploymentUrl(): string | null {
 }
 
 function log(...args: any[]): void {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development') {
     console.log(...args);
   }
 }
+
