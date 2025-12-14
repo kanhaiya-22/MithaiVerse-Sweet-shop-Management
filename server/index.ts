@@ -1,4 +1,12 @@
+// Load environment variables first
+if (process.env.NODE_ENV !== "production") {
+  process.loadEnvFile(".env");
+}
+
 import express, { type Request, Response, NextFunction } from "express";
+import cors from "cors";
+import session from "express-session";
+import createMemoryStore from "memorystore";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
@@ -12,16 +20,53 @@ declare module "http" {
   }
 }
 
+// Parse JSON and preserve raw body (useful for webhooks/signature validation)
 app.use(
   express.json({
     verify: (req, _res, buf) => {
-      req.rawBody = buf;
+      (req as any).rawBody = buf;
     },
-  }),
+  })
 );
 
+// Parse URL-encoded bodies
 app.use(express.urlencoded({ extended: false }));
 
+// Setup session middleware BEFORE routes
+const MemoryStore = createMemoryStore(session);
+app.use(
+  session({
+    store: new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    }),
+    secret: process.env.SESSION_SECRET || "your-secret-key-dev",
+    resave: true, // Force session to be saved even if unmodified
+    saveUninitialized: true, // Force uninitialized session to be saved
+    cookie: {
+      secure: false, // Always false in dev, true in production should be handled separately
+      httpOnly: true,
+      sameSite: "lax", // Use lax for development (works with secure: false)
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
+// CORS for frontend requests
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+
+// Session debug middleware - VERY EARLY to catch everything
+app.use((req, res, next) => {
+  const bodyPreview = JSON.stringify(req.body).substring(0, 80);
+  console.log(`[${req.method} ${req.path}] Session: ${req.sessionID}, User: ${(req.session as any)?.userId || 'none'}`);
+  next();
+});
+
+// Custom logger
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",
@@ -33,15 +78,16 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
+// API request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+  let capturedJsonResponse: Record<string, any> | undefined;
 
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
+  const originalResJson = res.json.bind(res);
+  res.json = function (bodyJson: any) {
     capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
+    return originalResJson.call(this, bodyJson);
   };
 
   res.on("finish", () => {
@@ -51,7 +97,6 @@ app.use((req, res, next) => {
       if (capturedJsonResponse) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
-
       log(logLine);
     }
   });
@@ -60,39 +105,36 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  await registerRoutes(httpServer, app);
+  try {
+    // Register API routes
+    console.log("Registering routes...");
+    await registerRoutes(httpServer, app);
+    console.log("Routes registered!");
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    // Centralized error handler (do NOT crash local server)
+    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
-  });
+      res.status(status).json({ message });
+      console.error(err);
+    });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (process.env.NODE_ENV === "production") {
-    serveStatic(app);
-  } else {
-    const { setupVite } = await import("./vite");
-    await setupVite(httpServer, app);
-  }
+    // Serve frontend
+    if (process.env.NODE_ENV === "production") {
+      serveStatic(app);
+    } else {
+      const { setupVite } = await import("./vite");
+      await setupVite(httpServer, app);
+    }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || "5000", 10);
-  httpServer.listen(
-    {
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    },
-    () => {
+    // Start server (local-friendly)
+    const port = parseInt(process.env.PORT || "5000", 10);
+    httpServer.listen(port, () => {
       log(`serving on port ${port}`);
-    },
-  );
+    });
+  } catch (err) {
+    console.error("Fatal error during startup:", err);
+    process.exit(1);
+  }
 })();
