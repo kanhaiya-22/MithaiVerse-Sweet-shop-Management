@@ -1,9 +1,9 @@
 import { Link, useLocation } from "wouter";
-import { Candy, ShoppingBag, User, LayoutDashboard, Menu, X } from "lucide-react";
+import { ShoppingBag, User, Menu } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import iconImage from "@assets/generated_images/cute_cupcake_icon.png";
+import logoImage from "@assets/Pink_Minimalist_Cake_Shop_On_Facebook_Post_1765709011132.jpg";
 
 export default function Navbar() {
   const [location] = useLocation();
@@ -28,12 +28,17 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
         {/* Logo */}
         <Link href="/">
-          <a className="flex items-center gap-2">
-            <img src={iconImage} alt="Logo" className="h-8 w-8 object-contain" />
-            <span className="font-heading text-2xl font-bold text-primary">SweetShop</span>
+          <a className="flex items-center gap-3 group">
+            <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-secondary shadow-sm transition-transform group-hover:scale-105">
+               <img src={logoImage} alt="MithaiVerse Logo" className="h-full w-full object-cover" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-heading text-2xl font-bold text-primary leading-none">MithaiVerse</span>
+              <span className="text-xs text-muted-foreground font-medium">Manage sweetness, effortlessly.</span>
+            </div>
           </a>
         </Link>
 
@@ -47,11 +52,11 @@ export default function Navbar() {
         {/* Actions */}
         <div className="hidden md:flex items-center gap-4">
           <Link href="/auth">
-            <Button variant="ghost" size="icon" className="rounded-full">
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-secondary/20 hover:text-secondary-foreground">
               <User className="h-5 w-5" />
             </Button>
           </Link>
-          <Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all">
+          <Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all border border-secondary/50">
             <ShoppingBag className="mr-2 h-4 w-4" /> Cart (0)
           </Button>
         </div>

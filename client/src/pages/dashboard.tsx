@@ -24,15 +24,15 @@ export default function Dashboard() {
       <main className="container mx-auto px-4 py-12">
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2">Our Menu</h1>
-            <p className="text-muted-foreground">Discover our delightful selection of handcrafted sweets.</p>
+            <h1 className="font-heading text-4xl font-bold mb-2 text-primary">Our Menu</h1>
+            <p className="text-muted-foreground">Discover our delightful selection of handcrafted Indian sweets.</p>
           </div>
           
           <div className="flex w-full md:w-auto gap-3">
             <div className="relative w-full md:w-80">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input 
-                placeholder="Search cupcakes, donuts..." 
+                placeholder="Search sweets..." 
                 className="pl-10 rounded-full bg-white border-border/50 shadow-sm focus-visible:ring-primary"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -51,10 +51,10 @@ export default function Dashboard() {
               key={cat}
               variant={selectedCategory === cat ? "default" : "outline"}
               onClick={() => setSelectedCategory(cat)}
-              className={`rounded-full px-6 transition-all ${
+              className={`rounded-full px-6 transition-all shrink-0 ${
                 selectedCategory === cat 
                   ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25" 
-                  : "bg-white hover:bg-primary/5 border-transparent shadow-sm"
+                  : "bg-white hover:bg-primary/5 border-transparent shadow-sm text-foreground"
               }`}
             >
               {cat}

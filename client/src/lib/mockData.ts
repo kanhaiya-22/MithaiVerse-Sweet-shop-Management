@@ -1,73 +1,95 @@
-import cupcakeImg from '@assets/stock_images/delicious_gourmet_cu_f534963b.jpg';
-import donutImg from '@assets/stock_images/colorful_glazed_donu_20e33317.jpg';
-import lollipopImg from '@assets/stock_images/swirly_rainbow_lolli_1f1312ca.jpg';
-import chocolateImg from '@assets/stock_images/artisan_chocolate_tr_4bf1a324.jpg';
+import gulabJamunImg from '@assets/stock_images/gulab_jamun_indian_s_17496bd3.jpg';
+import kajuKatliImg from '@assets/stock_images/kaju_katli_diamond_s_390f4434.jpg';
+import jalebiImg from '@assets/stock_images/jalebi_spiraled_swee_47fe2be5.jpg';
+import rasgullaImg from '@assets/stock_images/rasgulla_white_sweet_8988ef69.jpg';
+import ladooImg from '@assets/stock_images/motichoor_ladoo_oran_b902d9b3.jpg';
+import soanPapdiImg from '@assets/stock_images/soan_papdi_flaky_swe_589c210c.jpg';
+import mysorePakImg from '@assets/stock_images/mysore_pak_sweet_e6888951.jpg';
+import assortmentImg from '@assets/stock_images/indian_sweets_assort_aaef6424.jpg';
 
 export interface Sweet {
   id: string;
   name: string;
-  category: 'Cake' | 'Candy' | 'Chocolate' | 'Pastry';
+  category: 'Milk-based' | 'Dry Fruit' | 'Fried' | 'Festival Specials' | 'Other';
   price: number;
   stock: number;
   description: string;
   image: string;
 }
 
-export const CATEGORIES = ['All', 'Cake', 'Candy', 'Chocolate', 'Pastry'];
+export const CATEGORIES = ['All', 'Milk-based', 'Dry Fruit', 'Fried', 'Festival Specials'];
 
 export const MOCK_SWEETS: Sweet[] = [
   {
     id: '1',
-    name: 'Rainbow Swirl Lollipop',
-    category: 'Candy',
-    price: 2.50,
+    name: 'Gulab Jamun',
+    category: 'Fried',
+    price: 350,
     stock: 50,
-    description: 'A classic giant lollipop with mesmerizing rainbow swirls. Sweet, fruity, and long-lasting.',
-    image: lollipopImg
+    description: 'Soft, spongy milk-solid balls soaked in rose-scented sugar syrup. A classic favorite.',
+    image: gulabJamunImg
   },
   {
     id: '2',
-    name: 'Gourmet Vanilla Cupcake',
-    category: 'Cake',
-    price: 4.00,
-    stock: 12,
-    description: 'Fluffy vanilla sponge topped with rich buttercream frosting and delicate sprinkles.',
-    image: cupcakeImg
+    name: 'Kaju Katli',
+    category: 'Dry Fruit',
+    price: 900,
+    stock: 25,
+    description: 'Diamond-shaped cashew fudge topped with edible silver leaf. Rich and melt-in-mouth.',
+    image: kajuKatliImg
   },
   {
     id: '3',
-    name: 'Galaxy Glazed Donut',
-    category: 'Pastry',
-    price: 3.50,
-    stock: 24,
-    description: 'Freshly fried donut dipped in a galaxy-themed mirror glaze with edible glitter.',
-    image: donutImg
+    name: 'Jalebi',
+    category: 'Fried',
+    price: 280,
+    stock: 40,
+    description: 'Crispy, spiraled sweets deep-fried and dipped in saffron sugar syrup.',
+    image: jalebiImg
   },
   {
     id: '4',
-    name: 'Artisan Dark Truffles',
-    category: 'Chocolate',
-    price: 12.00,
-    stock: 8,
-    description: 'Box of 6 hand-crafted dark chocolate truffles with ganache filling.',
-    image: chocolateImg
+    name: 'Rasgulla',
+    category: 'Milk-based',
+    price: 320,
+    stock: 30,
+    description: 'Spongy cottage cheese balls cooked in light sugar syrup. Served chilled.',
+    image: rasgullaImg
   },
   {
     id: '5',
-    name: 'Strawberry Macaron',
-    category: 'Pastry',
-    price: 2.00,
-    stock: 0,
-    description: 'Delicate almond meringue cookies sandwiched with fresh strawberry jam.',
-    image: cupcakeImg // Reusing for now
+    name: 'Motichoor Ladoo',
+    category: 'Festival Specials',
+    price: 400,
+    stock: 60,
+    description: 'Tiny gram flour pearls fried and mixed with sugar syrup, molded into delicious spheres.',
+    image: ladooImg
   },
   {
     id: '6',
-    name: 'Mint Chocolate Chip',
-    category: 'Chocolate',
-    price: 5.50,
+    name: 'Mysore Pak',
+    category: 'Milk-based',
+    price: 650,
     stock: 15,
-    description: 'Refreshing mint chocolate bark with crunchy cookie pieces.',
-    image: chocolateImg // Reusing
+    description: 'Traditional South Indian sweet made from ghee, sugar, and gram flour. Rich and buttery.',
+    image: mysorePakImg
+  },
+  {
+    id: '7',
+    name: 'Soan Papdi',
+    category: 'Other',
+    price: 250,
+    stock: 100,
+    description: 'Cube-shaped crispy and flaky sweet made with gram flour, ghee, and cardamom.',
+    image: soanPapdiImg
+  },
+  {
+    id: '8',
+    name: 'Assorted Gift Box',
+    category: 'Festival Specials',
+    price: 1200,
+    stock: 20,
+    description: 'A premium collection of our finest sweets, perfect for gifting on special occasions.',
+    image: assortmentImg
   }
 ];

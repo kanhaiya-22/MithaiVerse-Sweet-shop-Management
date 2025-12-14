@@ -37,7 +37,7 @@ export default function SweetCard({ sweet }: SweetCardProps) {
               </Badge>
             </div>
           )}
-          <Badge className="absolute top-3 right-3 bg-white/90 text-foreground hover:bg-white shadow-sm backdrop-blur-sm">
+          <Badge className="absolute top-3 right-3 bg-white/90 text-primary font-bold hover:bg-white shadow-sm backdrop-blur-sm border-none">
             {sweet.category}
           </Badge>
         </div>
@@ -45,23 +45,23 @@ export default function SweetCard({ sweet }: SweetCardProps) {
       <CardContent className="p-5">
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-heading text-xl font-bold text-foreground leading-tight">{sweet.name}</h3>
-          <span className="font-bold text-primary text-lg">${sweet.price.toFixed(2)}</span>
+          <span className="font-bold text-primary text-lg">₹{sweet.price.toFixed(0)}</span>
         </div>
         <p className="text-muted-foreground text-sm line-clamp-2 mb-4">{sweet.description}</p>
         <div className="text-xs font-medium text-muted-foreground">
-          Stock: <span className={sweet.stock < 5 ? "text-destructive" : "text-green-600"}>{sweet.stock} available</span>
+          Stock: <span className={sweet.stock < 5 ? "text-destructive" : "text-green-600"}>{sweet.stock} kg available</span>
         </div>
       </CardContent>
       <CardFooter className="p-5 pt-0">
         <Button 
-          className="w-full rounded-full font-bold shadow-sm" 
+          className="w-full rounded-full font-bold shadow-sm bg-primary text-primary-foreground hover:bg-primary/90" 
           disabled={isOutOfStock}
           onClick={handlePurchase}
           variant={isOutOfStock ? "outline" : "default"}
         >
           {isOutOfStock ? "Out of Stock" : (
             <>
-              <ShoppingCart className="mr-2 h-4 w-4" /> Purchase
+              <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
             </>
           )}
         </Button>
